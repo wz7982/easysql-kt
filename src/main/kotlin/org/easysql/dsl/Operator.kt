@@ -1,6 +1,5 @@
 package org.easysql.dsl
 
-import com.sun.org.apache.xpath.internal.operations.Bool
 import org.easysql.ast.expr.SqlBinaryOperator
 import java.math.BigDecimal
 import java.util.*
