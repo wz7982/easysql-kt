@@ -38,7 +38,7 @@ fun visitExpr(e: Expr<*>?): SqlExpr = when (e) {
 
 fun visitColumnExpr(expr: ColumnExpr<*>): SqlExpr =
     if (expr.column.contains(".")) {
-        val split = expr.column.split("\\.")
+        val split = expr.column.split(".")
         if (split.last().contains("*")) {
             SqlAllColumnExpr(split.first())
         } else {

@@ -57,7 +57,10 @@ class Select<T : Tuple> : SelectQuery<T>() {
                 }
             }
 
-            is Expr<*> -> sqlAst.addSelectItem(visitExpr(s), s.alias)
+            is Expr<*> -> {
+                sqlAst.addSelectItem(visitExpr(s), s.alias)
+                s.alias?.let { aliasNames.add(it) }
+            }
         }
     }
 
