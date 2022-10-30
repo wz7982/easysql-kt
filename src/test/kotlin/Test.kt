@@ -30,40 +30,20 @@ object Test {
     }
 }
 
-//fun print(i: Int) {
-//    (1 .. i).forEach {
-//        print("@JvmName(\"_$it")
-//        (1 .. i).forEach { n ->
-//            print("T$n")
-//        }
-//        println("\")")
-//        print("fun <")
-//        (1 until i).forEach { n ->
-//            print("T$n, ")
-//        }
-//        print("T$i> SelectQuery<Tuple$i<")
-//        (1 until i).forEach { n ->
-//            print("T$n, ")
-//        }
-//        print("T$i>>._$it() = ")
-//        println("col<T$it>(\"\${this.aliasName}.\${aliasNames[${it - 1}]}\")")
-//    }
-//}
-
 class A : TableSchema<Nothing>("a") {
-    val id = intColumn("id")
+    val id = numberColumn("id")
 }
 
 val a by lazy { A() }
 
 class B : TableSchema<Nothing>("b") {
-    val id = intColumn("id")
+    val id = numberColumn("id")
 }
 
 val b by lazy { B() }
 
 class C : TableSchema<Nothing>("c") {
-    val id = intColumn("id")
+    val id = numberColumn("id")
 }
 
 val c by lazy { C() }
@@ -73,8 +53,8 @@ data class UserRow(val id: Int, val name: String?) : TableEntity {
 }
 
 class User : TableSchema<UserRow>("user") {
-    val id = intColumn("id").incr()
-    val name = stringColumn("name").nullable()
+    val id = numberColumn("id").incr()
+    val name = stringColumn("name")
 }
 
 val user by lazy { User() }

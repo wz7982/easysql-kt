@@ -9,26 +9,22 @@ import org.easysql.query.select.Select
 import org.easysql.query.select.SelectQuery
 import org.easysql.query.update.Update
 
-fun <T : Any> value(v: T) = ConstExpr(v)
+fun <T : Any> value(v: T?) = ConstExpr(v)
+fun <T : Any> col(column: String) = ColumnExpr<T>(column)
 
-@JvmName("typeCol")
-fun <T> col(column: String) = ColumnExpr<T>(column)
-
-fun col(column: String) = ColumnExpr<Any?>(column)
-
-fun <T> caseWhen(vararg conditions: CaseBranch<T>) = CaseExpr(conditions.toList())
+fun <T : Any> caseWhen(vararg conditions: CaseBranch<T>) = CaseExpr(conditions.toList())
 
 fun exists(s: SelectQuery<*>) = SubQueryPredicateExpr<Boolean>(s, SqlSubQueryPredicate.EXISTS)
 
 fun notExists(s: SelectQuery<*>) = SubQueryPredicateExpr<Boolean>(s, SqlSubQueryPredicate.NOT_EXISTS)
 
-fun all(s: SelectQuery<*>) = SubQueryPredicateExpr<Any?>(s, SqlSubQueryPredicate.ALL)
+fun <T : Any> all(s: SelectQuery<Tuple1<T>>) = SubQueryPredicateExpr<T>(s, SqlSubQueryPredicate.ALL)
 
-fun any(s: SelectQuery<*>) = SubQueryPredicateExpr<Any?>(s, SqlSubQueryPredicate.ANY)
+fun <T : Any> any(s: SelectQuery<*>) = SubQueryPredicateExpr<T>(s, SqlSubQueryPredicate.ANY)
 
-fun some(s: SelectQuery<*>) = SubQueryPredicateExpr<Any?>(s, SqlSubQueryPredicate.SOME)
+fun <T : Any> some(s: SelectQuery<*>) = SubQueryPredicateExpr<T>(s, SqlSubQueryPredicate.SOME)
 
-fun <T> cast(expr: Expr<*>, cast: String) = CastExpr<T>(expr, cast)
+fun <T : Any> cast(expr: Expr<*>, cast: String) = CastExpr<T>(expr, cast)
 
 fun cols() = AllColumnExpr()
 
