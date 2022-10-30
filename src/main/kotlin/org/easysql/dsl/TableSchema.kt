@@ -3,7 +3,6 @@ package org.easysql.dsl
 import org.easysql.ast.table.SqlJoinType
 import java.math.BigDecimal
 import java.util.*
-import kotlin.reflect.full.declaredMemberProperties
 
 sealed interface AnyTable {
     infix fun join(right: AnyTable): JoinTable = JoinTable(this, SqlJoinType.JOIN, right)
@@ -19,20 +18,16 @@ abstract class TableSchema<T>(
     var aliasName: String? = null,
     val cols: MutableList<TableColumnExpr<*>> = mutableListOf()
 ) : AnyTable, Selectable<T> {
-    private fun <T> column(name: String): TableColumnExpr<T> {
+    private fun <T : Any> column(name: String): TableColumnExpr<T> {
         val col = aliasName?.let { TableColumnExpr<T>(it, name, this) } ?: TableColumnExpr(tableName, name, this)
         cols.add(col)
         return col
     }
 
-    fun intColumn(name: String) = column<Int>(name)
+    fun numberColumn(name: String) = column<Number>(name)
     fun stringColumn(name: String) = column<String>(name)
-    fun longColumn(name: String) = column<Long>(name)
-    fun floatColumn(name: String) = column<Float>(name)
-    fun doubleColumn(name: String) = column<Double>(name)
     fun booleanColumn(name: String) = column<Boolean>(name)
     fun dateColumn(name: String) = column<Date>(name)
-    fun decimalColumn(name: String) = column<BigDecimal>(name)
 }
 
 inline infix fun <reified T : TableSchema<*>> T.alias(name: String): T {
