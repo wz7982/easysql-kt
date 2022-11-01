@@ -8,10 +8,10 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 
-fun query(conn: Connection, sql: String): List<Map<String, Any?>> {
+fun query(conn: Connection, sql: String): List<List<Any?>> {
     var stmt: Statement? = null
     var rs: ResultSet? = null
-    val result = mutableListOf<Map<String, Any?>>()
+    val result = mutableListOf<List<Any?>>()
 
     try {
         stmt = conn.createStatement()
@@ -19,18 +19,17 @@ fun query(conn: Connection, sql: String): List<Map<String, Any?>> {
         val metadata = rs.metaData
 
         while (rs.next()) {
-            val rowMap = mutableMapOf<String, Any?>()
-            (1..metadata.columnCount).forEach {
+            val row = (1..metadata.columnCount).map {
                 var field = rs.getObject(it)
                 if (field is LocalDateTime) {
                     field = Date.from(field.atZone(ZoneId.systemDefault()).toInstant())
                 }
-                rowMap[metadata.getColumnLabel(it)] = field
+                field
             }
-            result.add(rowMap)
+            result.add(row)
         }
     } catch (e: SQLException) {
-        e.printStackTrace()
+        throw e
     } finally {
         stmt?.close()
         rs?.close()
@@ -49,7 +48,7 @@ fun queryCount(conn: Connection, sql: String): Int {
         rs = stmt.executeQuery(sql)
         result = rs.fetchSize
     } catch (e: SQLException) {
-        e.printStackTrace()
+        throw e
     } finally {
         stmt?.close()
         rs?.close()
@@ -66,7 +65,7 @@ fun exec(conn: Connection, sql: String): Int {
         stmt = conn.createStatement()
         result = stmt.executeUpdate(sql)
     } catch (e: SQLException) {
-        e.printStackTrace()
+        throw e
     } finally {
         stmt?.close()
     }
@@ -86,7 +85,7 @@ fun execReturnKey(conn: Connection, sql: String): List<Long> {
             result += resultSet.getLong(1)
         }
     } catch (e: SQLException) {
-        e.printStackTrace()
+        throw e
     } finally {
         stmt?.close()
     }
