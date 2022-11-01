@@ -11,6 +11,7 @@ import org.easysql.dsl.*
 import org.easysql.util.toSqlString
 import org.easysql.visitor.visitExpr
 
+@Suppress("UNCHECKED_CAST")
 class Select<T : Tuple> : SelectQuery<T>() {
     val sqlAst = SqlSelect(selectList = mutableListOf(SqlSelectItem(SqlAllColumnExpr())))
 
