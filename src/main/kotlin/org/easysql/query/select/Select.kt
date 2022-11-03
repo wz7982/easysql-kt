@@ -912,11 +912,10 @@ class Select<T : Tuple> : SelectQuery<T>() {
     fun countSql(db: DB): String {
         val copy = sqlAst.copy(selectList = mutableListOf(), limit = null, orderBy = mutableListOf())
         copy.addSelectItem(visitExpr(count()), "count")
-
         return toSqlString(db, copy)
     }
 
-    fun pageSql(pageSize: Int, pageNum: Int, db: DB): String {
+    fun pageSql(db: DB, pageSize: Int, pageNum: Int): String {
         val offset = if (pageNum <= 1) 0 else pageSize * (pageNum - 1)
         val limit = SqlLimit(pageSize, offset)
         val copy = sqlAst.copy(limit = limit)
