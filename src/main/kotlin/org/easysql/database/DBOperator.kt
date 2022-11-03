@@ -6,9 +6,9 @@ import org.easysql.query.insert.Insert
 import org.easysql.query.select.Select
 import org.easysql.query.select.SelectQuery
 
-abstract class DBOperator(val db: DB) {
+abstract class DBOperator(open val db: DB) {
 
-    abstract val queryFunc: (sql: String) -> List<List<Any?>>
+    abstract fun queryFunc(sql: String): List<List<Any?>>
 
     fun queryPage(query: Select<*>, pageSize: Int, pageNum: Int, fetchCount: Boolean): Page<List<Any?>> {
         val data = if (pageSize == 0) {
@@ -17,13 +17,13 @@ abstract class DBOperator(val db: DB) {
             val sql = query.pageSql(db, pageSize, pageNum)
             queryFunc(sql)
         }
-        
+
         val count = if (fetchCount) {
             fetchCount(query)
         } else {
             0L
         }
-        
+
         val totalPage = if (count == 0L || pageSize == 0) {
             0
         } else {
@@ -204,7 +204,8 @@ abstract class DBOperator(val db: DB) {
     inline fun <reified T1, reified T2, reified T3, reified T4, reified T5, reified T6, reified T7, reified T8, reified T9, reified T10> find(
         query: Select<Tuple10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>>
     ): Tuple10<T1?, T2?, T3?, T4?, T5?, T6?, T7?, T8?, T9?, T10?>? =
-        queryFunc(query.limit(1).sql(db)).map { Bind.bindTuple10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(it) }.firstOrNull()
+        queryFunc(query.limit(1).sql(db)).map { Bind.bindTuple10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(it) }
+            .firstOrNull()
 
     @JvmName("findTuple11")
     inline fun <reified T1, reified T2, reified T3, reified T4, reified T5, reified T6, reified T7, reified T8, reified T9, reified T10, reified T11> find(
@@ -217,21 +218,27 @@ abstract class DBOperator(val db: DB) {
     inline fun <reified T1, reified T2, reified T3, reified T4, reified T5, reified T6, reified T7, reified T8, reified T9, reified T10, reified T11, reified T12> find(
         query: Select<Tuple12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>>
     ): Tuple12<T1?, T2?, T3?, T4?, T5?, T6?, T7?, T8?, T9?, T10?, T11?, T12?>? =
-        queryFunc(query.limit(1).sql(db)).map { Bind.bindTuple12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(it) }
+        queryFunc(
+            query.limit(1).sql(db)
+        ).map { Bind.bindTuple12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>(it) }
             .firstOrNull()
 
     @JvmName("findTuple13")
     inline fun <reified T1, reified T2, reified T3, reified T4, reified T5, reified T6, reified T7, reified T8, reified T9, reified T10, reified T11, reified T12, reified T13> find(
         query: Select<Tuple13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>>
     ): Tuple13<T1?, T2?, T3?, T4?, T5?, T6?, T7?, T8?, T9?, T10?, T11?, T12?, T13?>? =
-        queryFunc(query.limit(1).sql(db)).map { Bind.bindTuple13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(it) }
+        queryFunc(
+            query.limit(1).sql(db)
+        ).map { Bind.bindTuple13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>(it) }
             .firstOrNull()
 
     @JvmName("findTuple14")
     inline fun <reified T1, reified T2, reified T3, reified T4, reified T5, reified T6, reified T7, reified T8, reified T9, reified T10, reified T11, reified T12, reified T13, reified T14> find(
         query: Select<Tuple14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>>
     ): Tuple14<T1?, T2?, T3?, T4?, T5?, T6?, T7?, T8?, T9?, T10?, T11?, T12?, T13?, T14?>? =
-        queryFunc(query.limit(1).sql(db)).map { Bind.bindTuple14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(it) }
+        queryFunc(
+            query.limit(1).sql(db)
+        ).map { Bind.bindTuple14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(it) }
             .firstOrNull()
 
     @JvmName("findTuple15")
