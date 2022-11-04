@@ -13,7 +13,7 @@ import org.easysql.visitor.visitExpr
 
 @Suppress("UNCHECKED_CAST")
 class Select<T : Tuple> : SelectQuery<T>() {
-    val sqlAst = SqlSelect(selectList = mutableListOf(SqlSelectItem(SqlAllColumnExpr())))
+    private val sqlAst = SqlSelect()
 
     private lateinit var joinLeft: SqlTable
 
@@ -66,10 +66,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
     }
 
     infix fun select(items: List<Expr<*>>): Select<EmptyTuple> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
-
         items.forEach {
             sqlAst.addSelectItem(visitExpr(it), it.alias)
         }
@@ -78,18 +74,12 @@ class Select<T : Tuple> : SelectQuery<T>() {
     }
 
     inline fun <reified T1> select(_1: Selectable<T1>): Select<Tuple1<T1>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
 
         return this as Select<Tuple1<T1>>
     }
 
     inline fun <reified T1, reified T2> select(_1: Selectable<T1>, _2: Selectable<T2>): Select<Tuple2<T1, T2>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
 
@@ -101,9 +91,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _2: Selectable<T2>,
         _3: Selectable<T3>
     ): Select<Tuple3<T1, T2, T3>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -117,9 +104,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _3: Selectable<T3>,
         _4: Selectable<T4>
     ): Select<Tuple4<T1, T2, T3, T4>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -135,9 +119,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _4: Selectable<T4>,
         _5: Selectable<T5>
     ): Select<Tuple5<T1, T2, T3, T4, T5>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -155,9 +136,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _5: Selectable<T5>,
         _6: Selectable<T6>
     ): Select<Tuple6<T1, T2, T3, T4, T5, T6>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -177,9 +155,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _6: Selectable<T6>,
         _7: Selectable<T7>
     ): Select<Tuple7<T1, T2, T3, T4, T5, T6, T7>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -201,9 +176,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _7: Selectable<T7>,
         _8: Selectable<T8>
     ): Select<Tuple8<T1, T2, T3, T4, T5, T6, T7, T8>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -227,9 +199,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _8: Selectable<T8>,
         _9: Selectable<T9>
     ): Select<Tuple9<T1, T2, T3, T4, T5, T6, T7, T8, T9>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -255,9 +224,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _9: Selectable<T9>,
         _10: Selectable<T10>
     ): Select<Tuple10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -285,9 +251,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _10: Selectable<T10>,
         _11: Selectable<T11>
     ): Select<Tuple11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -317,9 +280,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _11: Selectable<T11>,
         _12: Selectable<T12>
     ): Select<Tuple12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -351,9 +311,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _12: Selectable<T12>,
         _13: Selectable<T13>
     ): Select<Tuple13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -387,9 +344,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _13: Selectable<T13>,
         _14: Selectable<T14>
     ): Select<Tuple14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -425,9 +379,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _14: Selectable<T14>,
         _15: Selectable<T15>
     ): Select<Tuple15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -465,9 +416,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _15: Selectable<T15>,
         _16: Selectable<T16>
     ): Select<Tuple16<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -507,9 +455,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _16: Selectable<T16>,
         _17: Selectable<T17>
     ): Select<Tuple17<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -551,9 +496,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _17: Selectable<T17>,
         _18: Selectable<T18>
     ): Select<Tuple18<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -597,9 +539,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _18: Selectable<T18>,
         _19: Selectable<T19>
     ): Select<Tuple19<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -645,9 +584,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _19: Selectable<T19>,
         _20: Selectable<T20>
     ): Select<Tuple20<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -695,9 +631,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _20: Selectable<T20>,
         _21: Selectable<T21>
     ): Select<Tuple21<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
@@ -747,9 +680,6 @@ class Select<T : Tuple> : SelectQuery<T>() {
         _21: Selectable<T21>,
         _22: Selectable<T22>
     ): Select<Tuple22<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22>> {
-        if (sqlAst.selectList.size == 1 && sqlAst.selectList[0].expr is SqlAllColumnExpr) {
-            sqlAst.selectList.clear()
-        }
         addSelectItem(_1)
         addSelectItem(_2)
         addSelectItem(_3)
