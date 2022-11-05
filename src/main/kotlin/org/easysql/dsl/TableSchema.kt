@@ -1,7 +1,6 @@
 package org.easysql.dsl
 
 import org.easysql.ast.table.SqlJoinType
-import java.math.BigDecimal
 import java.util.*
 
 sealed interface AnyTable {
@@ -16,10 +15,10 @@ sealed interface AnyTable {
 abstract class TableSchema<T>(
     val tableName: String,
     var aliasName: String? = null,
-    val cols: MutableList<TableColumnExpr<*>> = mutableListOf()
+    val cols: MutableList<Column<*>> = mutableListOf()
 ) : AnyTable, Selectable<T> {
-    private fun <T : Any> column(name: String): TableColumnExpr<T> {
-        val col = aliasName?.let { TableColumnExpr<T>(it, name, this) } ?: TableColumnExpr(tableName, name, this)
+    private fun <T : Any> column(name: String): Column<T> {
+        val col = aliasName?.let { Column<T>(it, name, this) } ?: Column(tableName, name, this)
         cols.add(col)
         return col
     }

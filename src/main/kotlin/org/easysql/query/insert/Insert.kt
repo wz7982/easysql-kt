@@ -4,8 +4,8 @@ import org.easysql.ast.expr.SqlIdentExpr
 import org.easysql.ast.statement.insert.SqlInsert
 import org.easysql.ast.table.SqlIdentTable
 import org.easysql.database.TableEntity
-import org.easysql.dsl.PrimaryKeyColumnExpr
-import org.easysql.dsl.TableColumnExpr
+import org.easysql.dsl.PrimaryKey
+import org.easysql.dsl.Column
 import org.easysql.query.ReviseQuery
 import org.easysql.visitor.toSqlExpr
 
@@ -25,14 +25,14 @@ class Insert : ReviseQuery<SqlInsert> {
             it.name to it.get(table)
         }.filter {
             when (val value = it.second) {
-                is TableColumnExpr<*> -> true
-                is PrimaryKeyColumnExpr<*> -> !value.incr
+                is Column<*> -> true
+                is PrimaryKey<*> -> !value.incr
                 else -> false
             }
         }.map {
             val columnName = when (val e = it.second) {
-                is TableColumnExpr<*> -> e.column
-                is PrimaryKeyColumnExpr<*> -> e.column
+                is Column<*> -> e.column
+                is PrimaryKey<*> -> e.column
                 else -> ""
             }
             it.first to SqlIdentExpr(columnName)

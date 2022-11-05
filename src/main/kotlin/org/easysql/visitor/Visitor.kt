@@ -11,9 +11,9 @@ fun visitExpr(e: Expr<*>?): SqlExpr = when (e) {
     null -> SqlNullExpr
     is ConstExpr -> toSqlExpr(e.value)
     is BinaryExpr -> SqlBinaryExpr(visitExpr(e.left), e.operator, visitExpr(e.right))
-    is ColumnExpr -> visitColumnExpr(e)
-    is TableColumnExpr -> SqlPropertyExpr((if (e.schema.aliasName == null) e.table else e.schema.aliasName)!!, e.column)
-    is PrimaryKeyColumnExpr -> SqlPropertyExpr((if (e.schema.aliasName == null) e.table else e.schema.aliasName)!!, e.column)
+    is DynamicColumn -> visitColumnExpr(e)
+    is Column -> SqlPropertyExpr((if (e.schema.aliasName == null) e.table else e.schema.aliasName)!!, e.column)
+    is PrimaryKey -> SqlPropertyExpr((if (e.schema.aliasName == null) e.table else e.schema.aliasName)!!, e.column)
     is SubQueryExpr -> SqlSelectQueryExpr(e.selectQuery.getAst())
     is NormalFunExpr -> SqlExprFunctionExpr(e.name, e.args.map { visitExpr(it) })
     is AggFunExpr -> visitAggFunExpr(e)
@@ -36,7 +36,7 @@ fun visitExpr(e: Expr<*>?): SqlExpr = when (e) {
     is ListExpr -> SqlListExpr(e.list.map { visitExpr(it) })
 }
 
-fun visitColumnExpr(expr: ColumnExpr<*>): SqlExpr =
+fun visitColumnExpr(expr: DynamicColumn<*>): SqlExpr =
     if (expr.column.contains(".")) {
         val split = expr.column.split(".")
         if (split.last().contains("*")) {
