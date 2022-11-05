@@ -10,7 +10,8 @@ import org.easysql.query.select.SelectQuery
 import org.easysql.query.update.Update
 
 fun <T : Any> value(v: T?) = ConstExpr(v)
-fun <T : Any> col(column: String) = ColumnExpr<T>(column)
+
+fun <T : Any> col(column: String) = DynamicColumn<T>(column)
 
 fun <T : Any> caseWhen(vararg conditions: CaseBranch<T>) = CaseExpr(conditions.toList())
 

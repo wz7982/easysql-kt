@@ -2,7 +2,6 @@ package org.easysql.dsl
 
 import org.easysql.ast.expr.SqlBinaryOperator
 import org.easysql.ast.expr.SqlSubQueryPredicate
-import org.easysql.ast.order.SqlOrderBy
 import org.easysql.ast.order.SqlOrderByOption
 import org.easysql.query.select.SelectQuery
 import java.util.Date
@@ -99,6 +98,9 @@ infix fun Expr<String>.notLike(v: String) = BinaryExpr<Boolean>(this, SqlBinaryO
 infix fun Expr<String>.like(e: Expr<String>) = BinaryExpr<Boolean>(this, SqlBinaryOperator.LIKE, e)
 infix fun Expr<String>.notLike(e: Expr<String>) = BinaryExpr<Boolean>(this, SqlBinaryOperator.NOT_LIKE, e)
 
+infix fun Expr<String>.eq(v: Date) = BinaryExpr<Boolean>(this, SqlBinaryOperator.EQ, ConstExpr(v))
+infix fun Expr<String>.ne(v: Date) = BinaryExpr<Boolean>(this, SqlBinaryOperator.NE, ConstExpr(v))
+
 infix fun Expr<String>.like(v: Date) = BinaryExpr<Boolean>(this, SqlBinaryOperator.LIKE, ConstExpr(v))
 infix fun Expr<String>.notLike(v: Date) = BinaryExpr<Boolean>(this, SqlBinaryOperator.NOT_LIKE, ConstExpr(v))
 
@@ -115,22 +117,22 @@ data class BinaryExpr<T : Any>(
     infix fun <V> then(q: SelectQuery<Tuple1<T>>) = CaseBranch<V>(this, SubQueryExpr(q))
 }
 
-data class ColumnExpr<T : Any>(val column: String, override var alias: String? = null) : Expr<T>()
+data class DynamicColumn<T : Any>(val column: String, override var alias: String? = null) : Expr<T>()
 
-data class TableColumnExpr<T : Any>(
+data class Column<T : Any>(
     val table: String,
     val column: String,
     val schema: TableSchema<*>,
     override var alias: String? = null
 ) : Expr<T>() {
-    fun primaryKey() = PrimaryKeyColumnExpr<T>(table, column, schema, false)
+    fun primaryKey() = PrimaryKey<T>(table, column, schema, false)
 
     override fun alias(name: String) = this.copy(alias = name)
 
-    fun incr() = PrimaryKeyColumnExpr<T>(this.table, this.column, schema, true)
+    fun incr() = PrimaryKey<T>(this.table, this.column, schema, true)
 }
 
-data class PrimaryKeyColumnExpr<T : Any>(
+data class PrimaryKey<T : Any>(
     val table: String,
     val column: String,
     val schema: TableSchema<*>,
