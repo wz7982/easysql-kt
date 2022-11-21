@@ -2,25 +2,27 @@
 
 package org.easysql.dsl
 
-fun count() = AggFunExpr<Number>("COUNT", listOf())
+import java.math.BigDecimal
 
-fun count(e: Expr<*>) = AggFunExpr<Number>("COUNT", listOf(e))
+fun count() = AggFunExpr<Long>("COUNT", listOf())
 
-fun countDistinct(e: Expr<*>) = AggFunExpr<Number>("COUNT", listOf(e), distinct = true)
+fun count(e: Expr<*>) = AggFunExpr<Long>("COUNT", listOf(e))
 
-fun sum(e: Expr<Number>) = AggFunExpr<Number>("SUM", listOf(e))
+fun countDistinct(e: Expr<*>) = AggFunExpr<Long>("COUNT", listOf(e), distinct = true)
 
-fun avg(e: Expr<Number>) = AggFunExpr<Number>("AVG", listOf(e))
+fun <T : Number> sum(e: Expr<T>) = AggFunExpr<BigDecimal>("SUM", listOf(e))
 
-fun <T : Any> max(e: Expr<T>) = AggFunExpr<T>("MAX", listOf(e))
+fun <T : Number> avg(e: Expr<T>) = AggFunExpr<BigDecimal>("AVG", listOf(e))
 
-fun <T : Any> min(e: Expr<T>) = AggFunExpr<T>("MIN", listOf(e))
+fun <T : Number> max(e: Expr<T>) = AggFunExpr<T>("MAX", listOf(e))
 
-fun rank() = AggFunExpr<Number>("RANK", listOf())
+fun <T : Number> min(e: Expr<T>) = AggFunExpr<T>("MIN", listOf(e))
 
-fun denseRank() = AggFunExpr<Number>("DENSE_RANK", listOf())
+fun rank() = AggFunExpr<Long>("RANK", listOf())
 
-fun rowNumber() = AggFunExpr<Number>("ROW_NUMBER", listOf())
+fun denseRank() = AggFunExpr<Long>("DENSE_RANK", listOf())
+
+fun rowNumber() = AggFunExpr<Long>("ROW_NUMBER", listOf())
 
 fun cube(vararg expr: Expr<*>) = NormalFunExpr<Nothing>("CUBE", expr.toList())
 

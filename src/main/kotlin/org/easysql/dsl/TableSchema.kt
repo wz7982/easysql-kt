@@ -1,6 +1,7 @@
 package org.easysql.dsl
 
 import org.easysql.ast.table.SqlJoinType
+import java.math.BigDecimal
 import java.util.*
 
 sealed interface AnyTable {
@@ -23,7 +24,11 @@ abstract class TableSchema<T>(
         return col
     }
 
-    fun numberColumn(name: String) = column<Number>(name)
+    fun intColumn(name: String) = column<Int>(name)
+    fun longColumn(name: String) = column<Long>(name)
+    fun floatColumn(name: String) = column<Float>(name)
+    fun doubleColumn(name: String) = column<Double>(name)
+    fun decimalColumn(name: String) = column<BigDecimal>(name)
     fun stringColumn(name: String) = column<String>(name)
     fun booleanColumn(name: String) = column<Boolean>(name)
     fun dateColumn(name: String) = column<Date>(name)
