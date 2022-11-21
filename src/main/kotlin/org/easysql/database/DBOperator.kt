@@ -43,8 +43,8 @@ abstract class DBOperator(open val db: DB) {
     abstract fun query(sql: String): List<Map<String, Any?>>
 
     @JvmName("queryTuple1")
-    inline fun <reified T1> query(query: SelectQuery<Tuple1<T1>>): List<T1> =
-        queryFunc(query.sql(db)).map { Bind.bindTuple1(it)!! }
+    inline fun <reified T1> query(query: SelectQuery<Tuple1<T1>>): List<T1?> =
+        queryFunc(query.sql(db)).map { Bind.bindTuple1(it) }
 
     @JvmName("queryTuple2")
     inline fun <reified T1, reified T2> query(query: SelectQuery<Tuple2<T1, T2>>): List<Tuple2<T1?, T2?>> =
@@ -328,7 +328,7 @@ abstract class DBOperator(open val db: DB) {
         pageSize: Int,
         pageNum: Int,
         fetchCount: Boolean
-    ): Page<T1> = queryPage(query, pageSize, pageNum, fetchCount).map { Bind.bindTuple1(it)!! }
+    ): Page<T1?> = queryPage(query, pageSize, pageNum, fetchCount).map { Bind.bindTuple1(it) }
 
     @JvmName("pageTuple2")
     inline fun <reified T1, reified T2> page(
