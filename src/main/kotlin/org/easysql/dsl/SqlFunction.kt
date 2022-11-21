@@ -26,7 +26,7 @@ fun rowNumber() = AggFunExpr<Long>("ROW_NUMBER", listOf())
 
 fun cube(vararg expr: Expr<*>) = NormalFunExpr<Nothing>("CUBE", expr.toList())
 
-fun roolup(vararg expr: Expr<*>) = NormalFunExpr<Nothing>("ROOLUP", expr.toList())
+fun rollup(vararg expr: Expr<*>) = NormalFunExpr<Nothing>("ROLLUP", expr.toList())
 
 fun groupingSets(vararg sets: List<Expr<*>>): NormalFunExpr<Nothing> {
     val name = "GROUPING SETS"
