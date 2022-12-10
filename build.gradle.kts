@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.7.20"
+    kotlin("jvm") version "1.7.22"
 }
 
 group = "org.easysql"
@@ -25,4 +25,5 @@ tasks.test {
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
     kotlinOptions.useK2 = true
+    kotlinOptions.freeCompilerArgs = listOf("-Xcontext-receivers")
 }
