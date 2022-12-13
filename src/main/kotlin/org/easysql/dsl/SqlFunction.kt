@@ -14,9 +14,9 @@ fun <T : Number> sum(e: Expr<T>) = AggFunExpr<BigDecimal>("SUM", listOf(e))
 
 fun <T : Number> avg(e: Expr<T>) = AggFunExpr<BigDecimal>("AVG", listOf(e))
 
-fun <T : Number> max(e: Expr<T>) = AggFunExpr<T>("MAX", listOf(e))
+fun <T : Any> max(e: Expr<T>) = AggFunExpr<T>("MAX", listOf(e))
 
-fun <T : Number> min(e: Expr<T>) = AggFunExpr<T>("MIN", listOf(e))
+fun <T : Any> min(e: Expr<T>) = AggFunExpr<T>("MIN", listOf(e))
 
 fun rank() = AggFunExpr<Long>("RANK", listOf())
 
