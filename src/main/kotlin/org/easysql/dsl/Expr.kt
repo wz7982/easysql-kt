@@ -8,8 +8,8 @@ import java.math.BigDecimal
 import java.util.Date
 
 sealed class Expr<T : Any>(open var alias: String? = null) : Selectable<T> {
-    infix fun eq(v: T) = BinaryExpr<Boolean>(this, SqlBinaryOperator.EQ, ConstExpr(v))
-    infix fun ne(v: T) = BinaryExpr<Boolean>(this, SqlBinaryOperator.NE, ConstExpr(v))
+    infix fun eq(v: T?) = BinaryExpr<Boolean>(this, SqlBinaryOperator.EQ, ConstExpr(v))
+    infix fun ne(v: T?) = BinaryExpr<Boolean>(this, SqlBinaryOperator.NE, ConstExpr(v))
     infix fun lt(v: T) = BinaryExpr<Boolean>(this, SqlBinaryOperator.LT, ConstExpr(v))
     infix fun le(v: T) = BinaryExpr<Boolean>(this, SqlBinaryOperator.LE, ConstExpr(v))
     infix fun gt(v: T) = BinaryExpr<Boolean>(this, SqlBinaryOperator.GT, ConstExpr(v))
@@ -67,8 +67,8 @@ operator fun <T1 : Number, T2 : Number> Expr<T1>.minus(v: T2) = BinaryExpr<BigDe
 operator fun <T1 : Number, T2 : Number> Expr<T1>.times(v: T2) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.MUL, ConstExpr(v))
 operator fun <T1 : Number, T2 : Number> Expr<T1>.div(v: T2) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.DIV, ConstExpr(v))
 operator fun <T1 : Number, T2 : Number> Expr<T1>.rem(v: T2) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.MOD, ConstExpr(v))
-infix fun <T1 : Number, T2 : Number> Expr<T1>.eq(v: T2) = BinaryExpr<Boolean>(this, SqlBinaryOperator.EQ, ConstExpr(v))
-infix fun <T1 : Number, T2 : Number> Expr<T1>.ne(v: T2) = BinaryExpr<Boolean>(this, SqlBinaryOperator.NE, ConstExpr(v))
+infix fun <T1 : Number, T2 : Number> Expr<T1>.eq(v: T2?) = BinaryExpr<Boolean>(this, SqlBinaryOperator.EQ, ConstExpr(v))
+infix fun <T1 : Number, T2 : Number> Expr<T1>.ne(v: T2?) = BinaryExpr<Boolean>(this, SqlBinaryOperator.NE, ConstExpr(v))
 infix fun <T1 : Number, T2 : Number> Expr<T1>.gt(v: T2) = BinaryExpr<Boolean>(this, SqlBinaryOperator.GT, ConstExpr(v))
 infix fun <T1 : Number, T2 : Number> Expr<T1>.ge(v: T2) = BinaryExpr<Boolean>(this, SqlBinaryOperator.GE, ConstExpr(v))
 infix fun <T1 : Number, T2 : Number> Expr<T1>.lt(v: T2) = BinaryExpr<Boolean>(this, SqlBinaryOperator.LT, ConstExpr(v))
