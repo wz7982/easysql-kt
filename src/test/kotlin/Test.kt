@@ -40,30 +40,12 @@ object Test {
     }
 }
 
-class A : TableSchema<Nothing>("a") {
-    val id = numberColumn("id")
-}
-
-val a by lazy { A() }
-
-class B : TableSchema<Nothing>("b") {
-    val id = numberColumn("id")
-}
-
-val b by lazy { B() }
-
-class C : TableSchema<Nothing>("c") {
-    val id = numberColumn("id")
-}
-
-val c by lazy { C() }
-
 data class UserRow(val id: Int, val name: String?) : TableEntity {
     override val table_ = user
 }
 
 class User : TableSchema<UserRow>("user") {
-    val id = numberColumn("id").incr()
+    val id = intColumn("id").incr()
     val name = stringColumn("name")
 }
 
