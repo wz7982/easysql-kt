@@ -29,10 +29,6 @@ sealed class Expr<T : Any>(open var alias: String? = null) : Selectable<T> {
     infix fun gt(q: SelectQuery<Tuple1<T>>) = BinaryExpr<Boolean>(this, SqlBinaryOperator.GT, SubQueryExpr(q))
     infix fun ge(q: SelectQuery<Tuple1<T>>) = BinaryExpr<Boolean>(this, SqlBinaryOperator.GE, SubQueryExpr(q))
 
-    infix fun and(e: Expr<*>) = BinaryExpr<Boolean>(this, SqlBinaryOperator.AND, e)
-    infix fun or(e: Expr<*>) = BinaryExpr<Boolean>(this, SqlBinaryOperator.OR, e)
-    infix fun xor(e: Expr<*>) = BinaryExpr<Boolean>(this, SqlBinaryOperator.XOR, e)
-
     @JvmName("in")
     infix fun inList(list: List<T>) = InListExpr<Boolean>(this, list.map { ConstExpr(it) })
     infix fun notInList(list: List<T>) = InListExpr<Boolean>(this, list.map { ConstExpr(it) }, true)
@@ -71,28 +67,60 @@ operator fun <T1 : Number, T2 : Number> Expr<T1>.minus(v: T2) = BinaryExpr<BigDe
 operator fun <T1 : Number, T2 : Number> Expr<T1>.times(v: T2) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.MUL, ConstExpr(v))
 operator fun <T1 : Number, T2 : Number> Expr<T1>.div(v: T2) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.DIV, ConstExpr(v))
 operator fun <T1 : Number, T2 : Number> Expr<T1>.rem(v: T2) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.MOD, ConstExpr(v))
+infix fun <T1 : Number, T2 : Number> Expr<T1>.eq(v: T2) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.EQ, ConstExpr(v))
+infix fun <T1 : Number, T2 : Number> Expr<T1>.ne(v: T2) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.NE, ConstExpr(v))
+infix fun <T1 : Number, T2 : Number> Expr<T1>.gt(v: T2) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.GT, ConstExpr(v))
+infix fun <T1 : Number, T2 : Number> Expr<T1>.ge(v: T2) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.GE, ConstExpr(v))
+infix fun <T1 : Number, T2 : Number> Expr<T1>.lt(v: T2) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.LT, ConstExpr(v))
+infix fun <T1 : Number, T2 : Number> Expr<T1>.le(v: T2) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.LE, ConstExpr(v))
+infix fun <T : Number> Expr<T>.inList(list: List<Number>) = InListExpr<Boolean>(this, list.map { ConstExpr(it) })
+infix fun <T : Number> Expr<T>.notInList(list: List<Number>) = InListExpr<Boolean>(this, list.map { ConstExpr(it) }, true)
+fun <T: Number> Expr<T>.between(start: Number, end: Number) = BetweenExpr<Boolean>(this, ConstExpr(start), ConstExpr(end))
+fun <T: Number> Expr<T>.notBetween(start: Number, end: Number) = BetweenExpr<Boolean>(this, ConstExpr(start), ConstExpr(end), true)
 
 operator fun <T1 : Number, T2 : Number> Expr<T1>.plus(e: Expr<T2>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.ADD, e)
 operator fun <T1 : Number, T2 : Number> Expr<T1>.minus(e: Expr<T2>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.SUB, e)
 operator fun <T1 : Number, T2 : Number> Expr<T1>.times(e: Expr<T2>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.MUL, e)
 operator fun <T1 : Number, T2 : Number> Expr<T1>.div(e: Expr<T2>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.DIV, e)
 operator fun <T1 : Number, T2 : Number> Expr<T1>.rem(e: Expr<T2>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.MOD, e)
+infix fun <T1 : Number, T2 : Number> Expr<T1>.eq(e: Expr<T2>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.EQ, e)
+infix fun <T1 : Number, T2 : Number> Expr<T1>.ne(e: Expr<T2>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.NE, e)
+infix fun <T1 : Number, T2 : Number> Expr<T1>.gt(e: Expr<T2>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.GT, e)
+infix fun <T1 : Number, T2 : Number> Expr<T1>.ge(e: Expr<T2>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.GE, e)
+infix fun <T1 : Number, T2 : Number> Expr<T1>.lt(e: Expr<T2>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.LT, e)
+infix fun <T1 : Number, T2 : Number> Expr<T1>.le(e: Expr<T2>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.LE, e)
 
 operator fun <T1 : Number, T2 : Number> Expr<T1>.plus(q: SelectQuery<Tuple1<T2>>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.ADD, SubQueryExpr(q))
 operator fun <T1 : Number, T2 : Number> Expr<T1>.minus(q: SelectQuery<Tuple1<T2>>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.SUB, SubQueryExpr(q))
 operator fun <T1 : Number, T2 : Number> Expr<T1>.times(q: SelectQuery<Tuple1<T2>>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.MUL, SubQueryExpr(q))
 operator fun <T1 : Number, T2 : Number> Expr<T1>.div(q: SelectQuery<Tuple1<T2>>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.DIV, SubQueryExpr(q))
 operator fun <T1 : Number, T2 : Number> Expr<T1>.rem(q: SelectQuery<Tuple1<T2>>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.MOD, SubQueryExpr(q))
+infix fun <T1 : Number, T2 : Number> Expr<T1>.eq(q: SelectQuery<Tuple1<T2>>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.EQ, SubQueryExpr(q))
+infix fun <T1 : Number, T2 : Number> Expr<T1>.ne(q: SelectQuery<Tuple1<T2>>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.NE, SubQueryExpr(q))
+infix fun <T1 : Number, T2 : Number> Expr<T1>.gt(q: SelectQuery<Tuple1<T2>>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.GT, SubQueryExpr(q))
+infix fun <T1 : Number, T2 : Number> Expr<T1>.ge(q: SelectQuery<Tuple1<T2>>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.GE, SubQueryExpr(q))
+infix fun <T1 : Number, T2 : Number> Expr<T1>.lt(q: SelectQuery<Tuple1<T2>>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.LT, SubQueryExpr(q))
+infix fun <T1 : Number, T2 : Number> Expr<T1>.le(q: SelectQuery<Tuple1<T2>>) = BinaryExpr<BigDecimal>(this, SqlBinaryOperator.LE, SubQueryExpr(q))
 
 infix fun Expr<String>.like(v: String) = BinaryExpr<Boolean>(this, SqlBinaryOperator.LIKE, ConstExpr(v))
 infix fun Expr<String>.notLike(v: String) = BinaryExpr<Boolean>(this, SqlBinaryOperator.NOT_LIKE, ConstExpr(v))
+
 infix fun Expr<String>.like(e: Expr<String>) = BinaryExpr<Boolean>(this, SqlBinaryOperator.LIKE, e)
 infix fun Expr<String>.notLike(e: Expr<String>) = BinaryExpr<Boolean>(this, SqlBinaryOperator.NOT_LIKE, e)
 
 infix fun Expr<Date>.eq(v: String) = BinaryExpr<Boolean>(this, SqlBinaryOperator.EQ, ConstExpr(v))
 infix fun Expr<Date>.ne(v: String) = BinaryExpr<Boolean>(this, SqlBinaryOperator.NE, ConstExpr(v))
+
 fun Expr<Date>.between(start: String, end: String) = BetweenExpr<Boolean>(this, ConstExpr(start), ConstExpr(end))
 fun Expr<Date>.notBetween(start: String, end: String) = BetweenExpr<Boolean>(this, ConstExpr(start), ConstExpr(end), true)
+
+infix fun Expr<Boolean>.and(e: Expr<Boolean>) = BinaryExpr<Boolean>(this, SqlBinaryOperator.AND, e)
+infix fun Expr<Boolean>.or(e: Expr<Boolean>) = BinaryExpr<Boolean>(this, SqlBinaryOperator.OR, e)
+infix fun Expr<Boolean>.xor(e: Expr<Boolean>) = BinaryExpr<Boolean>(this, SqlBinaryOperator.XOR, e)
+
+infix fun Expr<Boolean>.and(v: Boolean) = BinaryExpr<Boolean>(this, SqlBinaryOperator.AND, ConstExpr(v))
+infix fun Expr<Boolean>.or(v: Boolean) = BinaryExpr<Boolean>(this, SqlBinaryOperator.OR, ConstExpr(v))
+infix fun Expr<Boolean>.xor(v: Boolean) = BinaryExpr<Boolean>(this, SqlBinaryOperator.XOR, ConstExpr(v))
 
 data class ConstExpr<T : Any>(val value: T?, override var alias: String? = null) : Expr<T>()
 
