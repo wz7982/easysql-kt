@@ -14,13 +14,13 @@ sealed interface AnyTable {
 }
 
 abstract class TableSchema<T>(
-    val tableName: String,
-    var aliasName: String? = null,
-    val cols: MutableList<Column<*>> = mutableListOf()
+    val tableName_: String,
+    var aliasName_: String? = null,
+    val cols_: MutableList<Column<*>> = mutableListOf()
 ) : AnyTable, Selectable<T> {
     private fun <T : Any> column(name: String): Column<T> {
-        val col = aliasName?.let { Column<T>(it, name, this) } ?: Column(tableName, name, this)
-        cols.add(col)
+        val col = aliasName_?.let { Column<T>(it, name, this) } ?: Column(tableName_, name, this)
+        cols_.add(col)
         return col
     }
 
@@ -38,7 +38,7 @@ inline infix fun <reified T : TableSchema<*>> T.alias(name: String): T {
     val clazz = T::class
     val constructors = clazz.constructors
     val table = constructors.first().call()
-    table.aliasName = name
+    table.aliasName_ = name
 
     return table
 }

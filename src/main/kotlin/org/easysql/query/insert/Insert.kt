@@ -37,7 +37,7 @@ class Insert : ReviseQuery<SqlInsert> {
             }
             it.first to SqlIdentExpr(columnName)
         }
-        ast.table = SqlIdentTable(table.tableName)
+        ast.table = SqlIdentTable(table.tableName_)
         ast.columns.addAll(cols.map { it.second })
 
         val entityClazz =  entities[0]::class.java
