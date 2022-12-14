@@ -5,6 +5,7 @@ import org.easysql.query.ReviseQuery
 import org.easysql.query.insert.Insert
 import org.easysql.query.select.Select
 import org.easysql.query.select.SelectQuery
+import java.math.BigDecimal
 
 abstract class DBOperator(open val db: DB) {
 
@@ -534,6 +535,8 @@ object Bind {
         val clazz = T::class
         return if (clazz.isData) {
             bindEntity<T>(nextIndex, data)
+        } else if (clazz.simpleName == "BigDecimal") {
+            nextIndex + 1 to BigDecimal(data[nextIndex].toString()) as T?
         } else {
             nextIndex + 1 to data[nextIndex] as T?
         }
