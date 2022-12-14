@@ -21,9 +21,9 @@ fun notExists(s: SelectQuery<*>) = SubQueryPredicateExpr<Boolean>(s, SqlSubQuery
 
 fun <T : Any> all(s: SelectQuery<Tuple1<T>>) = SubQueryPredicateExpr<T>(s, SqlSubQueryPredicate.ALL)
 
-fun <T : Any> any(s: SelectQuery<*>) = SubQueryPredicateExpr<T>(s, SqlSubQueryPredicate.ANY)
+fun <T : Any> any(s: SelectQuery<Tuple1<T>>) = SubQueryPredicateExpr<T>(s, SqlSubQueryPredicate.ANY)
 
-fun <T : Any> some(s: SelectQuery<*>) = SubQueryPredicateExpr<T>(s, SqlSubQueryPredicate.SOME)
+fun <T : Any> some(s: SelectQuery<Tuple1<T>>) = SubQueryPredicateExpr<T>(s, SqlSubQueryPredicate.SOME)
 
 fun <T : Any> cast(expr: Expr<*>, cast: String) = CastExpr<T>(expr, cast)
 
