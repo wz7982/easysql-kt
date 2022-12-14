@@ -1,10 +1,8 @@
 package org.easysql.query.select
 
-import org.easysql.ast.expr.SqlAllColumnExpr
 import org.easysql.ast.limit.SqlLimit
 import org.easysql.ast.order.SqlOrderBy
 import org.easysql.ast.statement.select.SqlSelect
-import org.easysql.ast.statement.select.SqlSelectItem
 import org.easysql.ast.table.*
 import org.easysql.database.DB
 import org.easysql.dsl.*
@@ -21,8 +19,8 @@ class Select<T : Tuple> : SelectQuery<T>() {
 
     private fun toSqlTable(t: AnyTable): SqlTable = when (t) {
         is TableSchema<*> -> {
-            val table = SqlIdentTable(t.tableName)
-            table.alias = t.aliasName
+            val table = SqlIdentTable(t.tableName_)
+            table.alias = t.aliasName_
             table
         }
 
@@ -53,7 +51,7 @@ class Select<T : Tuple> : SelectQuery<T>() {
     fun addSelectItem(s: Selectable<*>) {
         when (s) {
             is TableSchema<*> -> {
-                s.cols.forEach {
+                s.cols_.forEach {
                     sqlAst.addSelectItem(visitExpr(it))
                 }
             }

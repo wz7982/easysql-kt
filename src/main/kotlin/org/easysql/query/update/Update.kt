@@ -52,7 +52,7 @@ class Update : ReviseQuery<SqlUpdate> {
             }
         }
 
-        ast.table = SqlIdentTable(table.tableName)
+        ast.table = SqlIdentTable(table.tableName_)
 
         val setCols = cols.filter { it.second is Column<*> }
         var setNum = 0

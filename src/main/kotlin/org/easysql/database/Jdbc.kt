@@ -72,23 +72,3 @@ fun exec(conn: Connection, sql: String): Int {
 
     return result
 }
-
-fun execReturnKey(conn: Connection, sql: String): List<Long> {
-    var stmt: Statement? = null
-    val result = mutableListOf<Long>()
-
-    try {
-        stmt = conn.createStatement()
-        stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS)
-        val resultSet = stmt.generatedKeys
-        while (resultSet.next()) {
-            result += resultSet.getLong(1)
-        }
-    } catch (e: SQLException) {
-        throw e
-    } finally {
-        stmt?.close()
-    }
-
-    return result
-}
