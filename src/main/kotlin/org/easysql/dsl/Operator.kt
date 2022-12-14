@@ -4,10 +4,10 @@ import org.easysql.ast.expr.SqlBinaryOperator
 import java.math.BigDecimal
 import java.util.*
 
-infix fun Int.alias(name: String) = ConstExpr(this, name)
-infix fun Long.alias(name: String) = ConstExpr(this, name)
-infix fun Float.alias(name: String) = ConstExpr(this, name)
-infix fun Double.alias(name: String) = ConstExpr(this, name)
+infix fun Int.alias(name: String) = ConstExpr(BigDecimal(this), name)
+infix fun Long.alias(name: String) = ConstExpr(BigDecimal(this), name)
+infix fun Float.alias(name: String) = ConstExpr(BigDecimal(this.toDouble()), name)
+infix fun Double.alias(name: String) = ConstExpr(BigDecimal(this), name)
 infix fun BigDecimal.alias(name: String) = ConstExpr(this, name)
 infix fun String.alias(name: String) = ConstExpr(this, name)
 infix fun Boolean.alias(name: String) = ConstExpr(this, name)
